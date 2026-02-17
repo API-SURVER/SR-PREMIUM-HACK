@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>𝐓𝐨𝐟𝐚𝐲𝐞𝐥 𝐓𝐞𝐚𝐝𝐞𝐫</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body, html {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        color: #fff;
+    }
+
+    /* ==================== MAIN CONTAINER ==================== */
+    #app {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    /* ==================== LOGIN SECTION ==================== */
+    #loginSection {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .login-container {
+        background: rgba(20, 20, 40, 0.8);
+        border: 2px solid #00ff9d;
+        border-radius: 20px;
+        padding: 50px 40px;
+        width: 100%;
+        max-width: 420px;
+        box-shadow: 
+            0 0 40px rgba(0, 255, 157, 0.3),
+            0 0 80px rgba(0, 255, 157, 0.1),
+            inset 0 0 20px rgba(0, 255, 157, 0.05);
+        backdrop-filter: blur(20px);
+        animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .login-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .login-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: #00ff9d;
+        text-shadow: 0 0 20px rgba(0, 255, 157, 0.5);
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+    }
+
+    .login-subtitle {
+        font-size: 14px;
+        color: #aaa;
+        letter-spacing: 0.5px;
+    }
+
+    .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .form-label {
+        font-size: 12px;
+        color: #00ff9d;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+    }
+
+    .password-input {
+        padding: 14px 16px;
+        border-radius: 10px;
+        border: 1.5px solid #00ff9d;
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        font-size: 14px;
+        outline: none;
+        transition: all 0.3s ease;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 1px;
+    }
+
+    .password-input::placeholder {
+        color: #666;
+    }
+
+    .password-input:focus {
+        border-color: #00ff9d;
+        box-shadow: 0 0 20px rgba(0, 255, 157, 0.4);
+        background: rgba(0, 0, 0, 0.7);
+    }
+
+    .login-button {
+        padding: 14px 20px;
+        border-radius: 10px;
+        border: none;
+        background: linear-gradient(90deg, #00ff9d, #00d4aa);
+        color: #000;
+        font-weight: 700;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        box-shadow: 0 8px 20px rgba(0, 255, 157, 0.3);
+    }
+
+    .login-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(0, 255, 157, 0.5);
+    }
+
+    .login-button:active {
+        transform: translateY(0);
+    }
+
+    /* ==================== PREDICTION SECTION ==================== */
+    #predictionSection {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+        display: none;
+        z-index: 999;
+        overflow: hidden;
+    }
+
+    .prediction-panel {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        background: linear-gradient(145deg, #001122, #002244);
+        padding: 20px;
+        border-radius: 15px;
+        width: 280px;
+        max-height: 90vh;
+        border: 2px solid #00ff9d;
+        box-shadow: 
+            0 0 30px rgba(0, 255, 157, 0.3),
+            0 0 60px rgba(0, 255, 157, 0.1),
+            inset 0 0 20px rgba(0, 255, 157, 0.05);
+        z-index: 10000;
+        backdrop-filter: blur(15px);
+        overflow-y: auto;
+        animation: slideInRight 0.5s ease-out;
+    }
+
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(0, 255, 157, 0.2);
+    }
+
+    .panel-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #00ff9d;
+        text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+        letter-spacing: 1px;
+    }
+
+    .close-btn {
+        width: 28px;
+        height: 28px;
+        background: rgba(255, 71, 87, 0.2);
+        border: 1px solid #ff4757;
+        border-radius: 6px;
+        color: #ff4757;
+        font-size: 18px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .close-btn:hover {
+        background: rgba(255, 71, 87, 0.3);
+        box-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
+    }
+
+    /* ==================== PERIOD BOX ==================== */
+    .period-box {
+        background: rgba(0, 0, 0, 0.4);
+        padding: 15px;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 255, 157, 0.3);
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .period-label {
+        color: #aaa;
+        font-size: 10px;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .current-period {
+        color: #00ff9d;
+        font-size: 14px;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+        word-break: break-all;
+        font-weight: 600;
+    }
+
+    .ahead-period {
+        color: #ff9d00;
+        font-size: 14px;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 1px;
+        font-weight: 700;
+        margin-top: 8px;
+        word-break: break-all;
+    }
+
+    /* ==================== TIMER ==================== */
+    .timer-container {
+        text-align: center;
+        margin: 20px 0;
+        padding: 15px;
+        background: rgba(0, 255, 157, 0.05);
+        border-radius: 10px;
+        border: 1px solid rgba(0, 255, 157, 0.2);
+    }
+
+    .timer {
+        font-size: 28px;
+        color: #00ff9d;
+        font-family: 'Courier New', monospace;
+        text-shadow: 0 0 15px rgba(0, 255, 157, 0.5);
+        margin-bottom: 5px;
+        transition: all 0.3s ease;
+        font-weight: 700;
+    }
+
+    .timer-label {
+        color: #aaa;
+        font-size: 10px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    /* ==================== PREDICTION GRID ==================== */
+    .prediction-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .prediction-card {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(0, 255, 157, 0.3);
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .prediction-card:hover {
+        transform: translateY(-3px);
+        border-color: #00ff9d;
+        box-shadow: 0 8px 16px rgba(0, 255, 157, 0.2);
+        background: rgba(0, 255, 157, 0.08);
+    }
+
+    .card-title {
+        color: #888;
+        font-size: 10px;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+    }
+
+    .card-value {
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+
+    .big { color: #00ff9d; }
+    .small { color: #ff4757; }
+    .green { color: #00ff9d; }
+    .red { color: #ff4757; }
+    .violet { color: #9d4edd; }
+
+    /* ==================== NUMBER DISPLAY ==================== */
+    .number-display {
+        text-align: center;
+        margin: 20px 0;
+        padding: 15px;
+        background: rgba(0, 255, 157, 0.08);
+        border-radius: 10px;
+        border: 1px solid rgba(0, 255, 157, 0.2);
+    }
+
+    .number-label {
+        color: #aaa;
+        font-size: 10px;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .number-value {
+        font-size: 36px;
+        font-weight: 700;
+        color: #00ff9d;
+        text-shadow: 0 0 20px rgba(0, 255, 157, 0.4);
+    }
+
+    /* ==================== ADVANTAGE BOX ==================== */
+    .advantage-box {
+        background: linear-gradient(90deg, rgba(0, 255, 157, 0.1), rgba(255, 157, 0, 0.1));
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #ff9d00;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .advantage-title {
+        color: #ff9d00;
+        font-size: 10px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        text-shadow: 0 0 8px rgba(255, 157, 0, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .advantage-value {
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    /* ==================== HISTORY ==================== */
+    .history-container {
+        max-height: 150px;
+        overflow-y: auto;
+        margin-top: 20px;
+        padding-right: 8px;
+    }
+
+    .history-item {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 8px;
+        border-left: 2px solid #00ff9d;
+        font-size: 11px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .history-period {
+        color: #aaa;
+        font-family: 'Courier New', monospace;
+        flex: 0 0 auto;
+    }
+
+    .history-result {
+        font-weight: 600;
+        color: #00ff9d;
+        flex: 1;
+        text-align: center;
+    }
+
+    /* ==================== TOAST ==================== */
+    #toast {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 20, 40, 0.95);
+        color: #00ff9d;
+        padding: 14px 28px;
+        border-radius: 10px;
+        border: 1px solid #00ff9d;
+        box-shadow: 0 0 20px rgba(0, 255, 157, 0.4);
+        font-weight: 600;
+        display: none;
+        z-index: 10001;
+        text-align: center;
+        animation: slideInDown 0.5s ease-out;
+        font-size: 13px;
+    }
+
+    @keyframes slideInDown {
+        from {
+            top: -80px;
+            opacity: 0;
+        }
+        to {
+            top: 20px;
+            opacity: 1;
+        }
+    }
+
+    /* ==================== SCROLLBAR ==================== */
+    .history-container::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .history-container::-webkit-scrollbar-track {
+        background: rgba(0, 255, 157, 0.05);
+        border-radius: 10px;
+    }
+
+    .history-container::-webkit-scrollbar-thumb {
+        background: rgba(0, 255, 157, 0.3);
+        border-radius: 10px;
+    }
+
+    .history-container::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 255, 157, 0.5);
+    }
+
+    .prediction-panel::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .prediction-panel::-webkit-scrollbar-track {
+        background: rgba(0, 255, 157, 0.05);
+        border-radius: 10px;
+    }
+
+    .prediction-panel::-webkit-scrollbar-thumb {
+        background: rgba(0, 255, 157, 0.3);
+        border-radius: 10px;
+    }
+
+    .prediction-panel::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 255, 157, 0.5);
+    }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 768px) {
+        .login-container {
+            padding: 40px 30px;
+            max-width: 90%;
+        }
+
+        .login-title {
+            font-size: 26px;
+        }
+
+        .prediction-panel {
+            width: 90%;
+            max-width: 400px;
+            max-height: 80vh;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .number-value {
+            font-size: 28px;
+        }
+
+        .timer {
+            font-size: 24px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<!-- LOGIN SECTION -->
+<div id="loginSection">
+    <div class="login-container">
+        <div class="login-header">
+            <div class="login-title">⚡ PREDICTION TOOL</div>
+            <div class="login-subtitle">𝐓𝐨𝐟𝐚𝐲𝐞𝐥 𝐓𝐞𝐚𝐝𝐞𝐫</div>
+        </div>
+
+        <form class="login-form" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label class="form-label">🔐 Access Code</label>
+                <input type="password" id="password" class="password-input" placeholder="Enter your password" autocomplete="off">
+            </div>
+            <button type="submit" class="login-button">🔓 ACTIVATE</button>
+        </form>
+    </div>
+</div>
+
+<!-- PREDICTION SECTION -->
+<div id="predictionSection">
+    <div class="prediction-panel">
+        <div class="panel-header">
+            <div class="panel-title">⚡ PERIODS AHEAD</div>
+            <div class="close-btn" onclick="togglePanel()">×</div>
+        </div>
+
+        <!-- Current Period -->
+        <div class="period-box">
+            <div class="period-label">Current Market Period</div>
+            <div class="current-period" id="currentPeriod">20260130000001</div>
+            
+            <div class="period-label" style="margin-top: 10px; color: #ff9d00;">
+                🔮 Viewing (Current + 20)
+            </div>
+            <div class="ahead-period" id="aheadPeriod">20260130000021</div>
+        </div>
+
+        <!-- Timer -->
+        <div class="timer-container">
+            <div class="timer" id="timer">30.00</div>
+            <div class="timer-label">NEXT PERIOD</div>
+        </div>
+
+        <!-- Prediction Grid -->
+        <div class="prediction-grid">
+            <div class="prediction-card">
+                <div class="card-title">Big / Small</div>
+                <div id="bsValue" class="card-value big">BIG</div>
+            </div>
+            <div class="prediction-card">
+                <div class="card-title">Color</div>
+                <div id="colorValue" class="card-value green">GREEN</div>
+            </div>
+        </div>
+
+        <!-- Number Display -->
+        <div class="number-display">
+            <div class="number-label">Winning Number</div>
+            <div class="number-value" id="numberValue">7</div>
+        </div>
+
+        <!-- Advantage Box -->
+        <div class="advantage-box">
+            <div class="advantage-title">🎯 Advantage</div>
+            <div class="advantage-value">𝐓𝐨𝐟𝐚𝐲𝐞𝐥 𝐓𝐞𝐚𝐝𝐞𝐫</div>
+        </div>
+
+        <!-- History -->
+        <div class="history-container" id="historyContainer"></div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast"></div>
+
+<script>
+// ================== CONFIGURATION ==================
+const VALID_PASSWORDS = ['𝐓𝐨𝐟𝐚𝐲𝐞𝐥'];
+const PERIOD_ADVANTAGE = 20;
+const GAME_CODE = '03';
+
+// ================== PERIOD GENERATOR ==================
+function generateTkclubPeriod(ahead = 0) {
+    const now = new Date();
+    const istTime = new Date(now.getTime() + (5.5 * 60 * 60 * 1000));
+    
+    const year = istTime.getFullYear();
+    const month = String(istTime.getMonth() + 1).padStart(2, '0');
+    const day = String(istTime.getDate()).padStart(2, '0');
+    const datePart = `${year}${month}${day}`;
+    
+    const totalSeconds = (istTime.getHours() * 3600) + 
+                        (istTime.getMinutes() * 60) + 
+                        istTime.getSeconds();
+    
+    let periodNumber = Math.floor(totalSeconds / 30) + 1;
+    periodNumber -= 680;
+    periodNumber += ahead;
+    
+    if (periodNumber < 1) {
+        const daysToAdd = Math.ceil(Math.abs(periodNumber) / 2880);
+        periodNumber += (daysToAdd * 2880);
+    }
+    
+    const maxPeriodsPerDay = (24 * 60 * 60) / 30;
+    if (periodNumber > maxPeriodsPerDay) {
+        periodNumber = periodNumber % maxPeriodsPerDay;
+        if (periodNumber === 0) periodNumber = maxPeriodsPerDay;
+    }
+    
+    const periodStr = String(periodNumber).padStart(4, '0');
+    
+    return {
+        fullPeriod: `${datePart}${GAME_CODE}${periodStr}`,
+        datePart: datePart,
+        periodNumber: periodNumber,
+        periodStr: periodStr,
+        timestamp: istTime
+    };
+}
+
+// ================== PREDICTION ENGINE ==================
+function generatePrediction(periodData) {
+    const seed = periodData.periodNumber;
+    
+    function seededRandom(seed, multiplier = 1) {
+        const x = Math.sin(seed * multiplier) * 10000;
+        return Math.abs(x - Math.floor(x));
+    }
+    
+    const rand1 = seededRandom(seed, 1);
+    const rand2 = seededRandom(seed, 2);
+    const rand3 = seededRandom(seed, 3);
+    
+    let number, bigSmall, color;
+    
+    if (rand1 < 0.55) {
+        bigSmall = "BIG";
+        const bigNumbers = [5, 6, 7, 8, 9];
+        const weights = [0.18, 0.22, 0.28, 0.20, 0.12];
+        let cumulative = 0;
+        
+        for (let i = 0; i < bigNumbers.length; i++) {
+            cumulative += weights[i];
+            if (rand2 < cumulative) {
+                number = bigNumbers[i];
+                break;
+            }
+        }
+    } else {
+        bigSmall = "SMALL";
+        const smallNumbers = [0, 1, 2, 3, 4];
+        const weights = [0.10, 0.25, 0.35, 0.20, 0.10];
+        let cumulative = 0;
+        
+        for (let i = 0; i < smallNumbers.length; i++) {
+            cumulative += weights[i];
+            if (rand2 < cumulative) {
+                number = smallNumbers[i];
+                break;
+            }
+        }
+    }
+    
+    if (number === 0) {
+        color = "GREEN";
+    } else if (number === 5) {
+        color = "VIOLET";
+    } else if (number % 2 === 0) {
+        color = "GREEN";
+    } else {
+        color = "RED";
+    }
+    
+    return {
+        period: periodData.fullPeriod,
+        number: number,
+        color: color,
+        bigSmall: bigSmall,
+        timestamp: new Date().toISOString()
+    };
+}
+
+// ================== TIMER ==================
+function updateTimer() {
+    const now = new Date();
+    const seconds = now.getSeconds();
+    const milliseconds = now.getMilliseconds();
+    
+    const remainingSeconds = 30 - (seconds % 30); 
+    const remainingMs = 1000 - milliseconds;
+    
+    const totalRemaining = (remainingSeconds - 1) + (remainingMs / 1000);
+    
+    const timerElement = document.getElementById('timer');
+    timerElement.textContent = totalRemaining.toFixed(2);
+    
+    if (totalRemaining <= 5) {
+        timerElement.style.color = '#ff4757';
+        timerElement.style.textShadow = '0 0 15px #ff4757, 0 0 30px #ff4757';
+    } else if (totalRemaining <= 10) {
+        timerElement.style.color = '#ff9d00';
+        timerElement.style.textShadow = '0 0 15px #ff9d00, 0 0 30px #ff9d00';
+    } else {
+        timerElement.style.color = '#00ff9d';
+        timerElement.style.textShadow = '0 0 15px #00ff9d, 0 0 30px #00ff9d';
+    }
+}
+
+// ================== HISTORY ==================
+let predictionHistory = [];
+
+function addToHistory(prediction) {
+    predictionHistory.unshift({
+        period: prediction.period,
+        result: `${prediction.bigSmall} | ${prediction.color} | ${prediction.number}`,
+        time: new Date().toLocaleTimeString()
+    });
+    
+    if (predictionHistory.length > 10) {
+        predictionHistory.pop();
+    }
+    
+    updateHistoryDisplay();
+}
+
+function updateHistoryDisplay() {
+    const container = document.getElementById('historyContainer');
+    container.innerHTML = '';
+    
+    predictionHistory.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'history-item';
+        div.innerHTML = `
+            <span class="history-period">${item.period.slice(-6)}</span>
+            <span class="history-result">${item.result}</span>
+        `;
+        container.appendChild(div);
+    });
+}
+
+// ================== TOAST ==================
+function showToast(message, duration = 2000) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.style.display = 'block';
+    
+    setTimeout(() => {
+        toast.style.display = 'none';
+    }, duration);
+}
+
+// ================== MAIN UPDATE FUNCTION ==================
+let currentAheadPeriod = "";
+let currentPrediction = null;
+let updateInterval = null;
+
+function updatePredictions() {
+    const currentPeriodData = generateTkclubPeriod(0);
+    document.getElementById('currentPeriod').textContent = currentPeriodData.fullPeriod;
+    
+    const aheadPeriodData = generateTkclubPeriod(PERIOD_ADVANTAGE);
+    document.getElementById('aheadPeriod').textContent = aheadPeriodData.fullPeriod;
+    
+    if (aheadPeriodData.fullPeriod !== currentAheadPeriod) {
+        currentAheadPeriod = aheadPeriodData.fullPeriod;
+        
+        currentPrediction = generatePrediction(aheadPeriodData);
+        addToHistory(currentPrediction);
+        
+        updatePredictionUI();
+        
+        if (predictionHistory.length > 1) {
+            showToast(`🎯 +20 Period: ${aheadPeriodData.periodNumber}`);
+        }
+    }
+    
+    updateTimer();
+}
+
+function updatePredictionUI() {
+    if (!currentPrediction) return;
+    
+    const bsElement = document.getElementById('bsValue');
+    bsElement.textContent = currentPrediction.bigSmall;
+    bsElement.className = `card-value ${currentPrediction.bigSmall.toLowerCase()}`;
+    
+    const colorElement = document.getElementById('colorValue');
+    colorElement.textContent = currentPrediction.color;
+    colorElement.className = `card-value ${currentPrediction.color.toLowerCase()}`;
+    
+    document.getElementById('numberValue').textContent = currentPrediction.number;
+}
+
+// ================== LOGIN ==================
+function handleLogin(event) {
+    event.preventDefault();
+    
+    const password = document.getElementById('password').value.trim();
+    
+    if (VALID_PASSWORDS.includes(password)) {
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('predictionSection').style.display = 'block';
+        
+        updatePredictions();
+        updateInterval = setInterval(updatePredictions, 100);
+        
+        showToast('✅ ACTIVATED! +20 periods ahead!', 3000);
+        
+        localStorage.setItem('prediction_tool_logged', 'true');
+        localStorage.setItem('prediction_tool_password', password);
+        
+    } else {
+        showToast('❌ Wrong password!');
+        document.getElementById('password').value = '';
+        document.getElementById('password').focus();
+        
+        const input = document.getElementById('password');
+        input.style.animation = 'none';
+        setTimeout(() => {
+            input.style.animation = 'shake 0.5s';
+        }, 10);
+    }
+}
+
+// Shake animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+`;
+document.head.appendChild(style);
+
+// ================== PANEL TOGGLE ==================
+function togglePanel() {
+    const panel = document.querySelector('.prediction-panel');
+    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+}
+
+// ================== INITIALIZATION ==================
+window.addEventListener('load', function() {
+    if (localStorage.getItem('prediction_tool_logged') === 'true') {
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('predictionSection').style.display = 'block';
+        
+        updatePredictions();
+        updateInterval = setInterval(updatePredictions, 100);
+        
+        setTimeout(() => {
+            showToast('✅ Welcome back! +20 periods ahead activated!', 2000);
+        }, 500);
+    } else {
+        setTimeout(() => {
+            document.getElementById('password').focus();
+        }, 100);
+    }
+});
+
+// ================== KEYBOARD SHORTCUTS ==================
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && document.activeElement === document.getElementById('password')) {
+        document.getElementById('password').form.dispatchEvent(new Event('submit'));
+    }
+});
+</script>
+
+</body>
+</html>
